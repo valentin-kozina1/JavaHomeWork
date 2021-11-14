@@ -15,31 +15,14 @@ public enum Size {
        this.EuroSize = EuroSize;
     }
 
-
-    public String getDescription(String size) {
-        switch (size){
-            case "XXS": Description = "Детский размер";
-            case "XS":
-            case "S":
-            case "M":
-            case "L": Description = "Взрослый размер";
-            default:  Description = "Нет такого размера";
-        }
+    public String getDescription() {
         return Description;
     }
 
-
-    public int getEuroSize(String size) {
-        switch (size){
-            case "XXS": EuroSize = 32; break;
-            case "XS": EuroSize =  34; break;
-            case "S": EuroSize =  36; break;
-            case "M": EuroSize =  38; break;
-            case "L": EuroSize =  40; break;
-        }
+    public int getEuroSize() {
         return EuroSize;
     }
-
+    
     @Override
     public String toString() {
         return  Description + " " + EuroSize;

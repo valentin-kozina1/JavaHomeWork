@@ -21,7 +21,6 @@ public class OnlineShop {
         }
         catch (WrongLoginException | WrongPasswordException l) {
             System.out.println(l.getMessage());
-            return;
         }
 
         try {

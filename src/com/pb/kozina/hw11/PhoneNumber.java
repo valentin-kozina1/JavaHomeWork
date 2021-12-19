@@ -1,12 +1,6 @@
 package com.pb.kozina.hw11;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 public  class PhoneNumber {
     private String FIO;
@@ -15,7 +9,6 @@ public  class PhoneNumber {
     private String adress;
     private LocalDate dateOfRegistration;
 
-    Path numbers = Paths.get("C:\\Users\\Master\\Desktop\\IT\\Java\\phoneBook.txt");
     public PhoneNumber(){};
 
     public PhoneNumber(

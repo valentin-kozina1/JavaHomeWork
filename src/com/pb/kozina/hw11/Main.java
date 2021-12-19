@@ -1,10 +1,8 @@
 package com.pb.kozina.hw11;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.pb.kozina.hw9.FileNumbers;
 
 
 import java.io.*;
@@ -12,11 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.logging.Level;
 
 import static java.util.Comparator.comparing;
 
@@ -120,7 +114,6 @@ public class Main {
             if (p.getFIO().equals(FIO)) {
                 personsJson = mapper.writeValueAsString(p);
                 System.out.println("В телефонной книге найден абонент" + personsJson);;
-                break;
             }
         }
 
@@ -130,7 +123,6 @@ public class Main {
             if (p.getAdress().equals(adress)) {
                 personsJson = mapper.writeValueAsString(p);
                 System.out.println("В телефонной книге найден абонент" + personsJson);;
-                break;
             }
         }
 
@@ -144,7 +136,6 @@ public class Main {
             if (p.getFIO().equals(FIO) && p.getDateOfBirth().equals(dateOfBirth)) {
                 personsJson = mapper.writeValueAsString(p);
                 System.out.println("В телефонной книге найден абонент" + personsJson);
-                break;
             }
         }
 

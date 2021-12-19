@@ -7,10 +7,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.pb.kozina.hw9.FileNumbers;
 
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -64,6 +61,12 @@ public class Main {
                         LocalDate.of(1989, 11, 25),
                         "380675555555",
                         "Маяковского, 26, 128",
+                        LocalDate.now()
+                ),
+                new PhoneNumber("Сергеенко Сергей Сергеевич",
+                        LocalDate.of(1993, 06, 22),
+                        "380675555554",
+                        "Алишера Навои, 69, 21",
                         LocalDate.now()
                 ),
                 new PhoneNumber("Максименко Максим Максимович",
@@ -198,6 +201,24 @@ public class Main {
         }
 
         // загрузка из фвйла данных
+
+        try (InputStream is = new FileInputStream("C:\\Users\\Master\\Desktop\\IT\\Java\\phoneNumbers.txt")) {
+
+            int available = is.available();
+            byte[] buffer = new byte[available];
+            int i = 0;
+
+            int data = is.read();
+            while (data != -1) {
+                buffer[i] = (byte) data;
+                data = is.read();
+                i++;
+            }
+
+            System.out.println(new String(buffer));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
     }
 }

@@ -15,7 +15,6 @@ public  class PhoneNumber {
     private String adress;
     private LocalDate dateOfRegistration;
 
-    Path numbers = Paths.get("C:\\Users\\Master\\Desktop\\IT\\Java\\phoneBook.txt");
     public PhoneNumber(){};
 
     public PhoneNumber(

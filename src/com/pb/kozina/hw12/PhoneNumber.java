@@ -1,6 +1,7 @@
 package com.pb.kozina.hw12;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public  class PhoneNumber {
     private String FIO;
@@ -35,6 +36,24 @@ public  class PhoneNumber {
     public void setPhone(String phone) {this.phone = phone;}
     public void setAdress(String adress) {this.adress = adress;}
     public void setDateOfRegistration(LocalDate dateOfRegistration) {this.dateOfRegistration = dateOfRegistration;}
+
+    @FunctionalInterface
+    interface Search {
+        int searchPhone(String searchAbonent);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PhoneNumber that = (PhoneNumber) o;
+        return Objects.equals(FIO, that.FIO) && Objects.equals(dateOfBirth, that.dateOfBirth) && Objects.equals(phone, that.phone) && Objects.equals(adress, that.adress) && Objects.equals(dateOfRegistration, that.dateOfRegistration);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(FIO, dateOfBirth, phone, adress, dateOfRegistration);
+    }
 
     @Override
     public String toString() {

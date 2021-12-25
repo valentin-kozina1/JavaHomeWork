@@ -1,27 +1,19 @@
 package com.pb.kozina.hw12;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.pb.kozina.hw12.LocalDateDeserializer;
-import com.pb.kozina.hw12.LocalDateSerializer;
-import com.pb.kozina.hw12.PhoneNumber;
-import com.pb.kozina.hw3.Array;
 
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.function.Predicate;
 
 import static java.util.Comparator.comparing;
 
@@ -83,17 +75,34 @@ public class Main {
                         LocalDate.now()
                 )
         ));
-        PhoneNumber.Write write = new PhoneNumber.Write() {
+
+        PhoneNumber.Search search = new PhoneNumber.Search() {
             @Override
-            public String writeVal(PhoneNumber p) {
-                String data;
-                try {
-                    data = mapper.writeValueAsString(p);
-                } catch (JsonProcessingException exception) {
-                    System.out.println("Exception message: {}"+ exception.getMessage());
-                    data = "";
+            public int searchPhone(String searchAbonent) {
+                String personsJson;
+                int index;
+                Predicate<PhoneNumber> deleteByFio = e -> e.getFIO().equals(searchAbonent);
+                boolean result = persons.stream().anyMatch(deleteByFio);
+                if (result == true) {
+
+                    PhoneNumber p = persons
+                            .stream()
+                            .filter(fio -> fio.getFIO().equals(searchAbonent))
+                            .findFirst()
+                            .get();
+                    index = persons.indexOf(p);
+                    try {
+                        personsJson = mapper.writeValueAsString(p);
+                        System.out.println("В телефонной книге найден абонент" + personsJson);
+
+                    } catch (JsonProcessingException exception) {
+                        System.out.println("Exception message: {}"+ exception.getMessage());
+                    }
+                } else {
+                    System.out.println("Нет такого абонента");
+                    index = -1;
                 }
-                return data;
+                return index;
             }
         };
 
@@ -111,7 +120,7 @@ public class Main {
         String adress = scan.nextLine();
         persons.add(new PhoneNumber(FIO, dateOfBirth, phone, adress, LocalDate.now()));
 
-        String personsJsonAdd = write.writeVal(persons.get(persons.size()-1));
+        String personsJsonAdd = mapper.writeValueAsString(persons.get(persons.size()-1));
         System.out.println("В телефонную книгу добавлен новый абонент" + personsJsonAdd);
         System.out.println("---------------------");
 
@@ -119,49 +128,32 @@ public class Main {
         System.out.println("Хотите удалить абонента");
         System.out.println("Укажите ФИО абонента");
         String FIOdelete = scan.nextLine();
+        int index =  search.searchPhone(FIOdelete);
+        if (index>=0) {
+            persons.remove(index);
+            System.out.println("Найденый элемент удален");};
 
-        persons.forEach(p -> {
-            if (p.getFIO().equals(FIOdelete)) {
-                String personsJsonDelete = write.writeVal(p);
-                System.out.println("Из телефонной книги удаляется абонент" + personsJsonDelete);;
-                persons.remove(p);
-            }
-        });
-
-        String personsJsonAfterDelete = mapper.writeValueAsString(persons);
-        System.out.println("Телефонная книга после удаления элемента" + personsJsonAfterDelete);
         System.out.println("---------------------");
 
         //  поиск телефона
         System.out.println("Найти телефон по ФИО");
         String FIOsearch = scan.nextLine();
-
-        persons.forEach(p -> {
-            if (p.getFIO().equals(FIOsearch)) {
-                String personsJsonSearchFIO = write.writeVal(p);
-                System.out.println("В телефонной книге найден абонент" + personsJsonSearchFIO);;
-                persons.remove(p);
-            }
-        });
+        index =  search.searchPhone(FIOsearch);
 
         System.out.println("Найти телефон по адресу");
         String adressSearch = scan.nextLine();
-        persons.forEach(p -> {
-            if (p.getFIO().equals(adressSearch)) {
-                String personsJsonAdress = write.writeVal(p);
-                System.out.println("В телефонной книге найден абонент" + personsJsonAdress);;
-            }
-        });
+        index =  search.searchPhone(adressSearch);
 
         System.out.println("Найти телефон по ФИО и дате рождения");
         System.out.println("Введит ФИО");
-        FIO = scan.nextLine();
+        String FIOSearch = scan.nextLine();
         System.out.println("Введит дату рождения");
         dB = scan.nextLine();
-        dateOfBirth = LocalDate.parse(dB);
+        dateOfBirth = LocalDate.parse(dB);;
         String personsJson;
+
         for (PhoneNumber p: persons) {
-            if (p.getFIO().equals(FIO) && p.getDateOfBirth().equals(dateOfBirth)) {
+            if (p.getFIO().equals(FIOSearch) && p.getDateOfBirth().equals(dateOfBirth)) {
                 personsJson = mapper.writeValueAsString(p);
                 System.out.println("В телефонной книге найден абонент" + personsJson);
             }
@@ -169,20 +161,18 @@ public class Main {
 
         // вывод всех записей с сортировкой по указанному полю
         // сортировка по алфавиту ФИО
-        System.out.println("Сортировка по ФИО");
+         System.out.println("Сортировка по ФИО");
 
-        persons.sort(comparing(PhoneNumber::getFIO).thenComparing(PhoneNumber::getAdress));
-        personsJson = mapper.writeValueAsString(persons);
-        System.out.print("Телефонная книга после сортировки по ФИО" + personsJson);
+        persons.stream()
+                .sorted(comparing(PhoneNumber::getFIO)) // сортировка по возрастанию
+                .forEach(s->System.out.println(s));
 
         // сортировка по нескольким полям:
         System.out.println("Сортировка по ФИО и адресу");
 
-        persons.sort(comparing(PhoneNumber::getFIO).thenComparing(PhoneNumber::getAdress));
-        //Arrays.sort(persons, (FIO1, FIO2) -> FIO1.getFIO() - FIO2.getFIO()); //comparing(PhoneNumber::getFIO).thenComparing(PhoneNumber::getAdress));
-        // Arrays.sort(people, (p1, p2) -> p1.getAge() - p2.getAge());
-        personsJson = mapper.writeValueAsString(persons);
-        System.out.print("Телефонная книга после сортировки по ФИО и адресу" + personsJson);
+        persons.stream()
+                .sorted(comparing(PhoneNumber::getFIO).thenComparing(PhoneNumber::getAdress)) // сортировка по возрастанию
+                .forEach(s->System.out.println(s));
 
         // редактирование абонента
 
@@ -240,6 +230,5 @@ public class Main {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
     }
 }

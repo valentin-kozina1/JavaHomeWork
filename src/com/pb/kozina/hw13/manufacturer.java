@@ -97,32 +97,5 @@ public class manufacturer {
 
         prodThread.interrupt();
         consThread.interrupt();
-
-
-        /*    ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
-        Lock readLock = readWriteLock.readLock();
-        Lock writeLock = readWriteLock.writeLock();
-
-        StringBuffer buffer = new StringBuffer("---");
-
-        Thread writerA = new Thread(new Produce(writeLock, buffer, "a"));
-        Thread writerB = new Thread(new Produce(writeLock, buffer, "b"));
-        Thread writerC = new Thread(new Produce(writeLock, buffer, "c"));
-        writerA.setName("WriterA");
-        writerB.setName("WriterB");
-        writerC.setName("WriterC");
-
-        Thread consuner = new Thread(new Consuner(*//*readLock,*//* buffer));*/
-      //  Thread reader2 = new Thread(new Consuner(readLock, buffer));
-      //  reader1.setName("Reader1");
-      //  reader2.setName("Reader2");
-
-       /* writerA.start();
-        consuner.start();
-
-        writerB.start();
-        writerC.start();
-*/
-//        reader2.start();
     }
 }

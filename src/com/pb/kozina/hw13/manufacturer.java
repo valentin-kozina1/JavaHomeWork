@@ -49,7 +49,7 @@ public class manufacturer {
                 try {
                     synchronized (data) {
                         if (data.size() >= size) {
-                            System.out.println("Produce ожидает освобождения буфера...");
+                            System.out.println("Produce ожидает освобождения буфера consumer...");
                             data.wait();
                         } else {
                             Double newValue =  Math.random();
@@ -78,5 +78,6 @@ public class manufacturer {
 
         produceThread.interrupt();
         consumerThread.interrupt();
+
     }
 }

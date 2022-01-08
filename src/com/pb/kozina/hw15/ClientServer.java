@@ -29,7 +29,7 @@ public class ClientServer {
         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
         Frame frame = new Frame();
-        Label label = new Label("Клиент подключился. Сервер ждет запроса");
+        Label label = new Label(" Клиент подключился. Сервер ждет запроса");
         Button button = new Button("Отправить сообщение");
         TextField textField = new TextField();
 

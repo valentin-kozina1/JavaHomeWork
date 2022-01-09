@@ -26,7 +26,6 @@ public class ServerMultiThread {
 
                 // печатает тело post запроса
                 StringBuilder payload = new StringBuilder();
-                System.out.println(in);
                 payload.append(in.readLine());
                 System.out.println("Получен запрос от клиента: " + payload);
                 System.out.println("Ответ отправлен клиенту");
